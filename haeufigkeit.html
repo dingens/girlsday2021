@@ -1,0 +1,165 @@
+<!doctype html charset="utf8">
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>Häufigkeitsanalyse</title>
+        <script src="jquery.js"></script>
+        <style type="text/css">
+            #output { display: flex; }
+            .output { border: 0px solid #666; margin: 0 .5em auto; }
+            .output tr.parthead th { border-bottom: 1px solid #666; }
+            .output tr th { padding-top: 5px; }
+            .output td:first-child { text-align: left; }
+            .output td { text-align: right; }
+            input:invalid { background: #fdd; }
+            #decryption { font-family: monospace; font-size: 1rem; line-height: 1.5; }
+        </style>
+
+    </head>
+    <body>
+        <form id="textform">
+            <textarea id="text" name="text" rows="10" cols="100"></textarea>
+            <br>
+            <label for="partitions">Analyse aufteilen, Schlüssellänge:</label>
+            <input type="number" id="partitions" name="partitions" size="3" min="1">
+
+            <div id="output">
+            </div>
+
+            <hr>
+
+            <label for="key"><strong>Entschlüsseln</strong> mit Schlüssel:</label>
+            <input id="key" name="key" pattern="^[A-Za-z]*$">
+
+            <div id="decryption">
+            </div>
+            
+        </form>
+        <script>
+
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const textform = $('#textform')[0]
+
+function updateCounts () {
+    $('#output').empty();
+    if ( ! textform.text.value.length )
+        return;
+
+    var numpart = 0;
+    if ( partitions.value )
+        numpart = parseInt(textform.partitions.value);
+    if ( Number.isNaN(numpart) || numpart == 0 )
+        numpart = 1;
+    console.log('numpart', numpart);
+
+    const parts = partitionChars(textform.text.value, numpart);
+
+    var p = 1;
+    for ( const part of parts ) {
+        var count = mostCommonLetters(part, 10);
+
+        var sum = 0;
+        for ( const c of part ) {
+            if ( characters.includes(c.toUpperCase()) )
+                sum++;
+        }
+
+        var t = $('<table class="output">');
+        if ( numpart > 1 )
+            t.append(`<tr class="parthead"><th colspan="3">Unterteilung ${p}</th></tr>`);
+        t.append('<tr><th>Buchst.</th><th colspan="2">Anzahl</th></tr>');
+        for (const [l, n] of count) {
+            var perc = Math.round(n * 100 / sum);
+            console.log(l);
+            console.log($('<tr>')
+                .append($('<td>').text(l))
+                .append($('<td>').text(n))
+                .append($('<td>').text(`(${perc}%)`))
+                .appendTo(t));
+        }
+        $('#output').append(t);
+        p++;
+    }
+}
+
+function updateDecryption () {
+    $('#decryption').empty();
+    if ( ! textform.text.value.length || ! textform.key.value.length ) {
+        $('#key').removeClass('wrongvalue');
+        return;
+    }
+
+    $('#decryption').text(decrypt(textform.text.value, textform.key.value));
+}
+
+
+
+function partitionChars (str, num) {
+    str = str.toUpperCase();
+    if ( ! num )
+        return [str];
+
+    var parts = new Array(num);
+    for ( let p = 0; p < num; p++)
+        parts[p] = [];
+
+    for ( var i = 0, p = 0; i < str.length; i++ ) {
+        if ( characters.includes(str[i]) ) {
+            parts[p].push(str[i]);
+            p = (p + 1) % num;
+        }
+    }
+    return parts;
+}
+
+function countAlph (str) {
+    var out = {};
+    for ( c of characters )
+        out[c] = 0;
+    for ( c of str ) {
+        c = c.toUpperCase();
+        if ( c in out ) 
+            out[c]++;
+    }
+    return out;
+}
+
+function mostCommonLetters (str, num) {
+    var count = Object.entries(countAlph(str));
+    count.sort((a,b) => b[1]-a[1]); // sort by num (descending)
+    count.splice(num); // only include most common `num` letters
+    return count.filter(x => x[1]); // remove 0s
+}
+
+function decrypt (str, key) {
+    var out = [];
+    var c, diff;
+    str = str.toUpperCase();
+    key = key.toUpperCase();
+    for ( var i = 0, p = 0; i < str.length; i++ ) {
+        if ( (c = characters.indexOf(str[i])) > -1 ) {
+            diff = characters.indexOf(key[p]);
+            out.push(characters[(52 + c - diff) % 26].toLowerCase());
+            p = (p + 1) % key.length;
+        } else {
+            out.push(str[i]);
+        }
+    }
+    return out.join('');
+}
+
+function validateKey (key) {
+    return /^[A-Za-z]+$/.test(key);
+}
+
+
+$('#text').on('input', updateCounts);
+$('#text').on('input', updateDecryption);
+$('#partitions').on('input', updateCounts);
+updateCounts();
+$('#key').on('input', updateDecryption);
+updateDecryption();
+
+        </script>
+    </body>
+</html>

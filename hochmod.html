@@ -1,0 +1,54 @@
+<!doctype html charset="utf8">
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>Hoch-Modulo-Rechner</title>
+        <script src="jquery.js"></script>
+        <style type="text/css">
+            body, input { font-size: 3rem; }
+            body { padding-top: 1em; }
+            input { width: 2em; }
+            .exp { font-size: 1.8rem; position: relative; bottom: 1.5em; }
+
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type="number"] {
+                -moz-appearance: textfield;
+            }
+        </style>
+
+    </head>
+    <body>
+        <form id="calc">
+            <input type="number" min="0" name="base" class="input">
+            <input type="number" min="0" name="exp" class="input exp">
+            mod
+            <input type="number" min="0" name="mod" class="input">
+            =
+            <input type="number" readonly name="result">
+        </form>
+        <script>
+
+function update () {
+    var base = parseInt(document.forms[0].base.value, 10);
+    var exp = parseInt(document.forms[0].exp.value, 10);
+    var mod = parseInt(document.forms[0].mod.value, 10);
+    if ( isNaN(base) || isNaN(exp) || isNaN(mod) ) {
+        document.forms[0].result.value = 'fehler';
+        return;
+    }
+
+    var result = (base ** exp) % mod;
+    console.log(base, exp, mod, result);
+    document.forms[0].result.value = result;
+}
+
+update();
+$('input.input').on('input change', update);
+
+        </script>
+    </body>
+</html>

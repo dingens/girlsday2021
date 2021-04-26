@@ -1,0 +1,73 @@
+<!doctype html charset="utf8">
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>Vigenère-Tabelle</title>
+        <script src="jquery.js"></script>
+        <style type="text/css">
+            body { font-family: monospace; }/**/
+            table { border-collapse: collapse; cursor: default; }
+            td, th { width: 1.2em; line-height: 1.5em; text-align: center; }
+            td:first-of-type, th.first { padding-left: .5em; }
+            tr.first td, tr.first th { padding-top: .5em; }
+            td:last-of-type, th.last { padding-right: .5em; }
+            tr.last td, tr.last th { padding-bottom: .5em; }
+            tr.encrypt.border th { border-bottom: 1px solid #44f; }
+            th.encrypt.border { border-right: 1px solid #44f; }
+            .encrypt { color: #44f; }
+            tr.decrypt.border th { border-top: 1px solid #c00; }
+            th.decrypt.border { border-left: 1px solid #c00; }
+            .decrypt { color: #c00; }
+            tr:hover td, tr:hover th { background: #eee; }
+            tr.encrypt:hover *, tr.decrypt:hover *, tr.label:hover * { background: inherit; }
+            .vertical { writing-mode: vertical-lr; background: transparent !important; }
+        </style>
+        <script>
+            function updateHover(ev) {
+                console.log(ev);
+                ev.target
+            }
+        </script>
+    </head>
+    <body>
+
+<table>
+    <tr class="label"><th colspan="2" class="encrypt border"></th><th colspan="26" class="encrypt">Klartext</th><th colspan="2" class="decrypt border"></th></tr>
+    <tr class="encrypt border"><th colspan="2" class="encrypt border"></th><th class="first">A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th><th>N</th><th>O</th><th>P</th><th>Q</th><th>R</th><th>S</th><th>T</th><th>U</th><th>V</th><th>W</th><th>X</th><th>Y</th><th class="last">Z</th><th colspan="2" class="decrypt border"></th></tr>
+    <tr class="first"><th class="encrypt label vertical" rowspan="26">Schlüssel</th><th class="encrypt border">A</th> <td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><th class="decrypt border">A</th><th class="decrypt label vertical" rowspan="26">Geheimtext</th></tr>
+<tr><th class="encrypt border">B</th> <td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><th class="decrypt border">B</th></tr>
+<tr><th class="encrypt border">C</th> <td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><th class="decrypt border">C</th></tr>
+<tr><th class="encrypt border">D</th> <td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><th class="decrypt border">D</th></tr>
+<tr><th class="encrypt border">E</th> <td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><th class="decrypt border">E</th></tr>
+<tr><th class="encrypt border">F</th> <td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><th class="decrypt border">F</th></tr>
+<tr><th class="encrypt border">G</th> <td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><th class="decrypt border">G</th></tr>
+<tr><th class="encrypt border">H</th> <td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><th class="decrypt border">H</th></tr>
+<tr><th class="encrypt border">I</th> <td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><th class="decrypt border">I</th></tr>
+<tr><th class="encrypt border">J</th> <td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><th class="decrypt border">J</th></tr>
+<tr><th class="encrypt border">K</th> <td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><th class="decrypt border">K</th></tr>
+<tr><th class="encrypt border">L</th> <td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><th class="decrypt border">L</th></tr>
+<tr><th class="encrypt border">M</th> <td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><th class="decrypt border">M</th></tr>
+<tr><th class="encrypt border">N</th> <td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><th class="decrypt border">N</th></tr>
+<tr><th class="encrypt border">O</th> <td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><th class="decrypt border">O</th></tr>
+<tr><th class="encrypt border">P</th> <td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><th class="decrypt border">P</th></tr>
+<tr><th class="encrypt border">Q</th> <td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><th class="decrypt border">Q</th></tr>
+<tr><th class="encrypt border">R</th> <td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><th class="decrypt border">R</th></tr>
+<tr><th class="encrypt border">S</th> <td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><th class="decrypt border">S</th></tr>
+<tr><th class="encrypt border">T</th> <td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><th class="decrypt border">T</th></tr>
+<tr><th class="encrypt border">U</th> <td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><th class="decrypt border">U</th></tr>
+<tr><th class="encrypt border">V</th> <td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><th class="decrypt border">V</th></tr>
+<tr><th class="encrypt border">W</th> <td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><th class="decrypt border">W</th></tr>
+<tr><th class="encrypt border">X</th> <td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><th class="decrypt border">X</th></tr>
+<tr><th class="encrypt border">Y</th> <td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><th class="decrypt border">Y</th></tr>
+<tr><th class="encrypt border">Z</th> <td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><th class="decrypt border">Z</th></tr>
+<tr class="decrypt border">
+<th colspan="2" class="encrypt border"></th><th class="first">A</th><th>Z</th><th>Y</th><th>X</th><th>W</th><th>V</th><th>U</th><th>T</th><th>S</th><th>R</th><th>Q</th><th>P</th><th>O</th><th>N</th><th>M</th><th>L</th><th>K</th><th>J</th><th>I</th><th>H</th><th>G</th><th>F</th><th>E</th><th>D</th><th>C</th><th class="last">B</th><th class="decrypt border"></th></tr>
+    <tr class="label"><th colspan="2" class="encrypt border"></th><th colspan="26" class="decrypt">Schlüssel</th><th colspan="2" class="decrypt border"></th></tr>
+</table>
+
+<script>
+    //$('td').on('mous bordereenter', updateHover border);
+</script>
+
+    </body>
+</html>
